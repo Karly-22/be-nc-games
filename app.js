@@ -7,7 +7,7 @@ const {
 
 app.get('/api/categories', getCategories);
 
-app.all('/api/*',(req, res) => {
+app.all('/*',(req, res) => {
     res.status(404).send({ msg: 'Route not found'})
 })
 
