@@ -31,4 +31,14 @@ describe('GET /api/categories', () => {
                 });
             }); 
     });
+
+    test('404: should return 404 not found when incorrect endpoint is passed', () => {
+        return request(app)
+            .get('/api/icantspellcatigorys')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toEqual('Route not found');
+            })
+
+    });
 });
