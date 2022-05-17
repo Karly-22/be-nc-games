@@ -12,26 +12,11 @@ exports.fetchSingleReview = (review_id) => {
 
 exports.updateVote = (review_id, inc_votes) => {
 
-    return db.query('SELECT votes FROM reviews WHERE review_id = $1;', [review_id])
-        .then((result) => {
-            const newVote = result.rows[0].votes + inc_votes;
-            
-            return db.query('UPDATE reviews SET votes = $1 WHERE review_id = $2 RETURNING *;', [newVote, review_id])
-        })
-        .then((result) => {
-            return result.rows[0];
-        })
-
-    // try {
-    // const single = await this.fetchSingleReview(review_id)
-    // console.log(single)
-    // } catch (err) { 
-
-    // }
-
-    // return db.query("UPDATE reviews SET votes = $1 WHERE review_id = $2 RETURNING *;", [newVote, review_id])
-    //     .then(() => {
-    //     }) 
+        return db.query('UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;', [inc_votes, review_id])
+            .then((result) => {
+                return result.rows[0];
+            })
+    
 };
 
 
