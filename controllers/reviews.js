@@ -1,5 +1,6 @@
 const {
-    fetchSingleReview
+    fetchSingleReview, 
+    updateVote
 } = require('../models/reviews');
 
 exports.getSingleReview = (req, res, next) => {
@@ -12,3 +13,16 @@ exports.getSingleReview = (req, res, next) => {
     })
 };
 
+exports.patchUpdateVote = (req, res, next) => {
+    const { review_id } = req.params;
+    const { inc_votes } = req.body;
+
+    updateVote(review_id, inc_votes).then((review) => {
+        res.status(200).send({ review });
+    })
+
+    // const promises = [fetchSingleReview(review_id),updateVote(inc_votes)];
+
+    // Promise.all(promises).then(() => {})
+
+}
