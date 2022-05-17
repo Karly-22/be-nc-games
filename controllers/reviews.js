@@ -20,9 +20,7 @@ exports.patchUpdateVote = (req, res, next) => {
     updateVote(review_id, inc_votes).then((review) => {
         res.status(200).send({ review });
     })
-
-    // const promises = [fetchSingleReview(review_id),updateVote(inc_votes)];
-
-    // Promise.all(promises).then(() => {})
-
-}
+    .catch((err) => {
+        next(err)
+    })
+};
