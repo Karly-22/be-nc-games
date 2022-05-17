@@ -42,3 +42,45 @@ describe('GET /api/categories', () => {
 
     });
 });
+
+describe('GET /api/reviews/:review_id', () => {
+    test('200: should respond with a single review object', () => {
+        const review_id = 2;
+        return request(app)
+            .get(`/api/reviews/${review_id}`)
+            .expect(200)
+            .then(({ body: { review }}) => { 
+                expect(review).toEqual({
+                    review_id: review_id,
+                    title: 'Jenga',
+                    designer: 'Leslie Scott',
+                    owner: 'philippaclaire9',
+                    review_img_url:
+                    'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                    review_body: 'Fiddly fun for all the family',
+                    category: 'dexterity',
+                    created_at: '2021-01-18T10:01:41.251Z',
+                    votes: 5
+                })
+            });
+
+    });
+
+    test('400: should respond with "Bad request" if not passed an integer', () => {
+        return request(app)
+        .get('/api/reviews/test')
+        .expect(400)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Bad request');
+        });
+    });
+
+    test('404: should respond with "Route not found" if passed a valid number', () => {
+        return request(app)
+        .get('/api/reviews/100')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Route not found');
+        });
+    });
+});
