@@ -123,23 +123,26 @@ describe('PATCH: /api/reviews/:review_id', () => {
     });
 
     test('400: should respond with "Bad request" if user does not pass integer for inc_votes', () => {
-        const userVote = { inc_votes: 'ten' };
+        const userVote = { inc_votes: 'hello' };
 
         return request(app)
-        .post('/api/reviews/2')
+        .patch('/api/reviews/2')
         .send(userVote)
         .expect(400)
         .then(({ body }) => {
-            expect(body.msg).toBe('Bad request');
+            expect(body.msg).toBe('Bad request: invalid input');
         });
     });
 
-    // test('404: should respond with "Route not found" if passed a valid number', () => {
-    //     return request(app)
-    //     .get('/api/reviews/100')
-    //     .expect(404)
-    //     .then(({ body }) => {
-    //         expect(body.msg).toBe('Route not found');
-    //     });
-    // });
+    test.only('404: should respond with "Route not found" if passed a valid number', () => {
+        const userVote = { inc_votes: 10 };
+
+        return request(app)
+        .patch('/api/reviews/100')
+        .send(userVote)
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('Route not found');
+        });
+    });
 });
