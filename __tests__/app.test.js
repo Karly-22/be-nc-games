@@ -84,7 +84,7 @@ describe('GET /api/reviews/:review_id', () => {
     });
 });
 
-describe('PATCH: /api/reviews/:review_id', () => {
+describe('PATCH /api/reviews/:review_id', () => {
     test('200: should update the votes property within the selected review', () => {
         const review_id = 2;
         const userVote = { inc_votes: 10 };
@@ -155,5 +155,26 @@ describe('PATCH: /api/reviews/:review_id', () => {
         .then(({ body: { msg }}) => {
             expect(msg).toBe('No review found for review_id: 100');
         });
+    });
+});
+
+describe('GET /api/users', () => {
+    test('200: should respond with list of users', () => {
+        return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then(({ body: { users }}) => {
+                expect(users).toBeInstanceOf(Array);
+                expect(users).toHaveLength(4);
+                users.forEach((user) => {
+                    expect(user).toEqual(
+                        expect.objectContaining({
+                            username: expect.any(String),
+                            name: expect.any(String),
+                            avatar_url: expect.any(String)
+                        })
+                    );
+                });
+            })
     });
 });
