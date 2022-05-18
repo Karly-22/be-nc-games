@@ -133,6 +133,18 @@ describe('PATCH: /api/reviews/:review_id', () => {
         });
     });
 
+    test('400: should respond with "Bad request" if user does not pass integer for inc_votes', () => {
+        const userVote = { inc_votes: {} };
+
+        return request(app)
+        .patch('/api/reviews/2')
+        .send(userVote)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe('Bad request');
+        });
+    });
+
     test('404: should respond with "Route not found" if passed a valid number', () => {
         const userVote = { inc_votes: 10 };
 
