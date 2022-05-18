@@ -17,8 +17,7 @@ describe('GET /api/categories', () => {
         return request(app)
             .get('/api/categories')
             .expect(200)
-            .then(({ body }) => {
-                const { categories } = body;
+            .then(({ body: { categories } }) => {
                 expect(categories).toBeInstanceOf(Array);
                 expect(categories).toHaveLength(4);
                 categories.forEach((category) => {
@@ -36,8 +35,8 @@ describe('GET /api/categories', () => {
         return request(app)
             .get('/api/icantspellcatigorys')
             .expect(404)
-            .then(({ body }) => {
-                expect(body.msg).toEqual('Route not found');
+            .then(({ body: { msg } }) => {
+                expect(msg).toEqual('Route not found');
             })
 
     });
@@ -70,8 +69,8 @@ describe('GET /api/reviews/:review_id', () => {
         return request(app)
         .get('/api/reviews/test')
         .expect(400)
-        .then(({ body }) => {
-            expect(body.msg).toBe('Bad request');
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe('Bad request');
         });
     });
 
@@ -79,8 +78,8 @@ describe('GET /api/reviews/:review_id', () => {
         return request(app)
         .get('/api/reviews/100')
         .expect(404)
-        .then(({ body }) => {
-            expect(body.msg).toBe('Route not found');
+        .then(({ body: { msg }}) => {
+            expect(msg).toBe('No review found for review_id: 100');
         });
     });
 });
@@ -117,8 +116,8 @@ describe('PATCH: /api/reviews/:review_id', () => {
         .patch('/api/reviews/test')
         .send(userVote)
         .expect(400)
-        .then(({ body }) => {
-            expect(body.msg).toBe('Bad request');
+        .then(({ body:{ msg } }) => {
+            expect(msg).toBe('Bad request');
         });
     });
 
@@ -129,20 +128,20 @@ describe('PATCH: /api/reviews/:review_id', () => {
         .patch('/api/reviews/2')
         .send(userVote)
         .expect(400)
-        .then(({ body }) => {
-            expect(body.msg).toBe('Bad request: invalid input');
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe('Bad request');
         });
     });
 
-    test.only('404: should respond with "Route not found" if passed a valid number', () => {
+    test('404: should respond with "Route not found" if passed a valid number', () => {
         const userVote = { inc_votes: 10 };
 
         return request(app)
         .patch('/api/reviews/100')
         .send(userVote)
         .expect(404)
-        .then(({ body }) => {
-            expect(body.msg).toBe('Route not found');
+        .then(({ body: { msg }}) => {
+            expect(msg).toBe('No review found for review_id: 100');
         });
     });
 });
