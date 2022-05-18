@@ -8,7 +8,8 @@ const {
 } = require('./controllers/categories');
 
 const {
-    getSingleReview
+    getSingleReview, 
+    patchUpdateVote
 } = require('./controllers/reviews');
 
 const { 
@@ -19,6 +20,7 @@ const {
 
 app.get('/api/categories', getCategories);
 app.get('/api/reviews/:review_id', getSingleReview);
+app.patch('/api/reviews/:review_id', patchUpdateVote);
 
 app.all('/*',(req, res) => {
     res.status(404).send({ msg: 'Route not found'})
