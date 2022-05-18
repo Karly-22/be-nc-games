@@ -121,7 +121,7 @@ describe('PATCH: /api/reviews/:review_id', () => {
         });
     });
 
-    test('400: should respond with "Bad request" if user does not pass integer for inc_votes', () => {
+    test('400: should respond with "Bad request" if user passes a string for inc_votes', () => {
         const userVote = { inc_votes: 'hello' };
 
         return request(app)
@@ -133,7 +133,7 @@ describe('PATCH: /api/reviews/:review_id', () => {
         });
     });
 
-    test('400: should respond with "Bad request" if user does not pass integer for inc_votes', () => {
+    test('400: should respond with "Bad request" if user passes an empty object for inc_votes', () => {
         const userVote = { inc_votes: {} };
 
         return request(app)
