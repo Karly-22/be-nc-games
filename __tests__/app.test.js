@@ -49,18 +49,20 @@ describe('GET /api/reviews/:review_id', () => {
             .get(`/api/reviews/${review_id}`)
             .expect(200)
             .then(({ body: { review }}) => { 
-                expect(review).toEqual({
-                    review_id: review_id,
-                    title: 'Jenga',
-                    designer: 'Leslie Scott',
-                    owner: 'philippaclaire9',
-                    review_img_url:
-                    'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
-                    review_body: 'Fiddly fun for all the family',
-                    category: 'dexterity',
-                    created_at: '2021-01-18T10:01:41.251Z',
-                    votes: 5
-                })
+                expect(review).toEqual(
+                    expect.objectContaining({
+                        review_id: review_id,
+                        title: 'Jenga',
+                        designer: 'Leslie Scott',
+                        owner: 'philippaclaire9',
+                        review_img_url:
+                        'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                        review_body: 'Fiddly fun for all the family',
+                        category: 'dexterity',
+                        created_at: '2021-01-18T10:01:41.251Z',
+                        votes: 5
+                    })
+                );
             });
 
     });
@@ -81,6 +83,34 @@ describe('GET /api/reviews/:review_id', () => {
         .then(({ body: { msg }}) => {
             expect(msg).toBe('No review found for review_id: 100');
         });
+    });
+    
+    test('200: specified review response should include comment_count property with value of 0', () => {
+        const review_id = 1;
+        return request(app)
+            .get(`/api/reviews/${review_id}`)
+            .expect(200)
+            .then(({ body: { review }}) => { 
+                expect(review).toEqual(
+                    expect.objectContaining({
+                        comment_count: 0
+                    })
+                );
+            });
+    });
+
+    test('200: specified review response should include comment_count property with value of 3', () => {
+        const review_id = 2;
+        return request(app)
+            .get(`/api/reviews/${review_id}`)
+            .expect(200)
+            .then(({ body: { review }}) => { 
+                expect(review).toEqual(
+                    expect.objectContaining({
+                        comment_count: 3
+                    })
+                );
+            });
     });
 });
 
@@ -178,3 +208,4 @@ describe('GET /api/users', () => {
             })
     });
 });
+
