@@ -12,7 +12,6 @@ exports.fetchSingleReview = (review_id) => {
         if (!result.rows.length) {
             return Promise.reject({ status: 404, msg: `No review found for review_id: ${review_id}` })
         };
-        console.table(result.rows[0])
         return result.rows[0];
     });
 };
