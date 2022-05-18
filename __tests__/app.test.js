@@ -85,7 +85,7 @@ describe('GET /api/reviews/:review_id', () => {
         });
     });
     
-    test('200: specified review response should include comment_count property with value of 0', () => {
+    test('200: should include comment_count property with the correct value for the review_id passed', () => {
         const review_id = 1;
         return request(app)
             .get(`/api/reviews/${review_id}`)
@@ -99,19 +99,6 @@ describe('GET /api/reviews/:review_id', () => {
             });
     });
 
-    test('200: specified review response should include comment_count property with value of 3', () => {
-        const review_id = 2;
-        return request(app)
-            .get(`/api/reviews/${review_id}`)
-            .expect(200)
-            .then(({ body: { review }}) => { 
-                expect(review).toEqual(
-                    expect.objectContaining({
-                        comment_count: 3
-                    })
-                );
-            });
-    });
 });
 
 describe('PATCH /api/reviews/:review_id', () => {
