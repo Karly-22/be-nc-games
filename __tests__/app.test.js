@@ -222,3 +222,55 @@ describe('GET /api/reviews', () => {
             }); 
     });
 });
+
+describe('GET /api/reviews/:review_id/comments', () => {
+    test('200: should respond with an array of comments for given review_id', () => {
+        return request(app)
+            .get('/api/reviews/2/comments')
+            .expect(200)
+            .then(({ body: {comments}}) => {
+                expect(comments).toBeInstanceOf(Array);
+                expect(comments).toHaveLength(3);
+                    comments.forEach((comment) => {
+                        expect(comment).toEqual(
+                            expect.objectContaining({
+                                comment_id: expect.any(Number),
+                                votes: expect.any(Number),
+                                created_at: expect.any(String),
+                                author: expect.any(String),
+                                body: expect.any(String),
+                                review_id: expect.any(Number)
+                            })
+                        )
+                    })
+            })
+    });
+
+    test('400: should respond with "Bad request" if not passed an integer through endpoint', () => {
+        return request(app)
+        .get('/api/reviews/hi/comments')
+        .expect(400)
+        .then(({ body:{ msg } }) => {
+            expect(msg).toBe('Bad request');
+        });
+    });
+
+    test('404: should respond with "Route not found" if passed a valid number but not one that matches id in path', () => {
+        return request(app)
+        .get('/api/reviews/100/comments')
+        .expect(404)
+        .then(({ body: { msg }}) => {
+            expect(msg).toBe('No review found for review_id: 100');
+        });
+    });
+
+    test('200: found review but no comments to show', () => {
+        return request(app)
+        .get('/api/reviews/1/comments')
+        .expect(200)
+        .then(({ body: { comments }}) => {
+            expect(comments).toBeInstanceOf(Array);
+            expect(comments).toHaveLength(0);
+        });
+    });                    
+});
