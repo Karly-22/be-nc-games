@@ -23,10 +23,15 @@ const {
     getUsers
 } = require('./controllers/users');
 
+const {
+    getReviewComments
+} = require('./controllers/comments');
+
 app.get('/api/categories', getCategories);
 app.get('/api/reviews', getReviews);
 app.get('/api/reviews/:review_id', getSingleReview);
 app.patch('/api/reviews/:review_id', patchUpdateVote);
+app.get('/api/reviews/:review_id/comments', getReviewComments);
 app.get('/api/users', getUsers);
 
 app.all('/*',(req, res) => {
