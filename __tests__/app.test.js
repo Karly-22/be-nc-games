@@ -222,3 +222,19 @@ describe('GET /api/reviews', () => {
             }); 
     });
 });
+
+describe.only('POST /api/reviews/:review_id/comments', () => {
+    test('200: should add a comment object to the comments array for the specified review id', () => {
+        const comment = {
+            username: 'bigJengaFan',
+            body: 'Jenga? Never heard of her'
+        }
+        return request(app)
+            .post('/api/reviews/2/comments')
+            .send(comment)
+            .expect(201)
+            .then(({ body: { addComment }}) => {
+                expect(addComment).toEqual({...comment})        
+            });
+    });
+})
