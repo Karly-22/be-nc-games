@@ -245,4 +245,22 @@ describe('GET /api/reviews/:review_id/comments', () => {
                     })
             })
     });
+
+    test('400: should respond with "Bad request" if not passed an integer through endpoint', () => {
+        return request(app)
+        .get('/api/reviews/hi/comments')
+        .expect(400)
+        .then(({ body:{ msg } }) => {
+            expect(msg).toBe('Bad request');
+        });
+    });
+
+    test('404: should respond with "Route not found" if passed a valid number but not one that matches id in path', () => {
+        return request(app)
+        .get('/api/reviews/100/comments')
+        .expect(404)
+        .then(({ body: { msg }}) => {
+            expect(msg).toBe('No review found for review_id: 100');
+        });
+    });
 });
