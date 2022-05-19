@@ -263,4 +263,14 @@ describe('GET /api/reviews/:review_id/comments', () => {
             expect(msg).toBe('No review found for review_id: 100');
         });
     });
+
+    test('200: found review but no comments to show', () => {
+        return request(app)
+        .get('/api/reviews/1/comments')
+        .expect(200)
+        .then(({ body: { comments }}) => {
+            expect(comments).toBeInstanceOf(Array);
+            expect(comments).toHaveLength(0);
+        });
+    });                    
 });
