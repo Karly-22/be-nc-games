@@ -1,6 +1,7 @@
 const {
     fetchSingleReview, 
-    updateVote
+    updateVote,
+    fetchReviews
 } = require('../models/reviews');
 
 exports.getSingleReview = (req, res, next) => {
@@ -22,5 +23,11 @@ exports.patchUpdateVote = (req, res, next) => {
     })
     .catch((err) => {
         next(err)
+    })
+};
+
+exports.getReviews = (req, res, next) => {
+    fetchReviews().then((reviews) => {
+        res.status(200).send({ reviews });
     })
 };

@@ -27,4 +27,22 @@ exports.updateVote = (review_id, inc_votes) => {
     
 };
 
-
+exports.fetchReviews = () => {
+    return db.query(`
+    SELECT 
+        reviews.review_id,    
+        reviews.owner, 
+        reviews.title, 
+        reviews.category, 
+        reviews.review_img_url, 
+        reviews.created_at, 
+        reviews.votes, 
+    COUNT(comments.review_id)::INT AS comment_count 
+    FROM reviews
+    LEFT JOIN comments ON comments.review_id = reviews.review_id 
+    GROUP BY reviews.review_id
+    ORDER BY created_at DESC;`)
+        .then((result) => {
+            return result.rows;
+        });
+};
