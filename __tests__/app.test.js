@@ -204,6 +204,7 @@ describe('GET /api/reviews', () => {
             .then(({ body: { reviews } }) => {
                 expect(reviews).toBeInstanceOf(Array);
                 expect(reviews).toHaveLength(13);
+                expect(reviews).toBeSortedBy('created_at', { descending: true });
                 reviews.forEach((review) => {
                     expect(review).toEqual(
                         expect.objectContaining({
