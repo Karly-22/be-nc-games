@@ -196,3 +196,28 @@ describe('GET /api/users', () => {
     });
 });
 
+describe('GET /api/reviews', () => {
+    test('200: should respond with an array of review objects', () => {
+        return request(app)
+            .get('/api/reviews')
+            .expect(200)
+            .then(({ body: { reviews } }) => {
+                expect(reviews).toBeInstanceOf(Array);
+                expect(reviews).toHaveLength(13);
+                reviews.forEach((review) => {
+                    expect(review).toEqual(
+                        expect.objectContaining({
+                            review_id: expect.any(Number),
+                            title: expect.any(String),
+                            owner: expect.any(String),
+                            review_img_url: expect.any(String),
+                            category: expect.any(String),
+                            created_at: expect.any(String),
+                            votes: expect.any(Number),
+                            comment_count: expect.any(Number)
+                        })
+                    );
+                });
+            }); 
+    });
+});
