@@ -16,6 +16,9 @@ exports.fetchReviewComments = (review_id) => {
 exports.insertReviewComment = (review_id, username, body) => {
     return db.query('INSERT INTO comments (review_id, author, body) VALUES ($1, $2, $3) RETURNING *;', [review_id, username, body])
     .then((result)=> {
+        if(!result.rows.length) {
+            return Promise.reject({ status: 404, msg: 'No review found'});
+        } 
         return result.rows[0];
     })
 };

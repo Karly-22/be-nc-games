@@ -16,7 +16,8 @@ const {
 const { 
     handleCustomErrors,
     handlePSQLErrors, 
-    handleInternalServerError
+    handleInternalServerError,
+    handleInsertReviewCommentError
 } = require('./controllers/errors');
 
 const {
@@ -42,6 +43,7 @@ app.all('/*',(req, res) => {
 
 app.use(handleCustomErrors);
 app.use(handlePSQLErrors);
+app.use(handleInsertReviewCommentError);
 app.use(handleInternalServerError);
 
 module.exports = app;

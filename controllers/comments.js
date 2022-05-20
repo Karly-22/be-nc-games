@@ -16,12 +16,7 @@ exports.postReviewComment = (req, res, next) => {
     insertReviewComment(review_id, username, body).then((comment) => {
         res.status(201).send({ comment });
     }).catch((err) => {
-        if(err.code === '23503') {
-            res.status(400).send({ msg: 'Bad request'})
-        } else if (err.code === '23502') {
-            res.status(400).send({ msg: 'No username or message input'})
-        } else {
+        console.log(err)
             next(err);
-        }
     })
 };
