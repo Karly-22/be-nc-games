@@ -257,6 +257,42 @@ describe('GET /api/reviews', () => {
                 expect(msg).toBe('Bad request');
             })
     });
+
+    test('200: should filter the reviews by specified category', () => {
+        return request(app)
+            .get('/api/reviews?category=social+deduction')
+            .expect(200)
+            .then(({ body: { reviews }}) => {
+                expect(reviews).toBeInstanceOf(Array);
+                expect(reviews).toHaveLength(11);
+                expect(reviews).toBeSortedBy('created_at', { descending: true });
+                reviews.forEach((review) => {
+                    expect(review).toEqual(
+                        expect.objectContaining({
+                            category: expect.any(String),
+                        })
+                    );
+                });
+            })
+    });
+
+    test('404: should return "banana doens not exist" if user tries to enter a non-valid category', () => {
+        return request(app)
+            .get('/api/reviews?category=banana')
+            .expect(404)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('banana does not exist');
+            })
+    });
+
+    test('404: should respond with custom error if user enters valid category but there are no reviews to show', () => {
+        return request(app)
+            .get('/api/reviews?category=children%27s+games')
+            .expect(404)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('No comments found for children\'s games category');
+            })
+    });
 });
 
 describe('GET /api/reviews/:review_id/comments', () => {
