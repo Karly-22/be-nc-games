@@ -43,7 +43,6 @@ app.all('/*',(req, res) => {
 
 app.use(handleCustomErrors);
 app.use(handlePSQLErrors);
-app.use(handleInsertReviewCommentError);
 app.use(handleInternalServerError);
 
 module.exports = app;
