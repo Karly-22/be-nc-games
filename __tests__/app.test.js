@@ -332,7 +332,7 @@ describe('POST /api/reviews/:review_id/comments', () => {
             .send(comment)
             .expect(404)
             .then(({ body: { msg }}) => {
-                expect(msg).toBe('Route not found')
+                expect(msg).toBe('Review not found')
             });
     });
 
@@ -351,7 +351,7 @@ describe('POST /api/reviews/:review_id/comments', () => {
             });
     });
     
-    test('404: should return "Route not found" user not in the data base tried to post', () => {
+    test('404: should return "User not found" user not in the data base tried to post', () => {
         const comment = {
             username: 'snoopDog',
             body: 'Fancy a game anyone?'
@@ -362,7 +362,7 @@ describe('POST /api/reviews/:review_id/comments', () => {
             .send(comment)
             .expect(404)
             .then(({ body: { msg }}) => {
-                expect(msg).toBe('Route not found')
+                expect(msg).toBe('User not found')
             });
     });
     
