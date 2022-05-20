@@ -27,7 +27,7 @@ exports.updateVote = (review_id, inc_votes) => {
     
 };
 
-exports.fetchReviews = (sort_by = 'created_at') => {
+exports.fetchReviews = (sort_by = 'created_at', order_by = 'DESC') => {
     let queryStr = `
     SELECT 
         reviews.review_id,    
@@ -46,7 +46,11 @@ exports.fetchReviews = (sort_by = 'created_at') => {
         return Promise.reject({status: 400, msg: 'Bad request'})
     }
 
-    queryStr += ` ORDER BY ${sort_by} DESC;`
+    if(!['ASC', 'DESC'].includes(order_by)) {
+        return Promise.reject({status: 400, msg: 'Bad request'})
+    }
+
+    queryStr += ` ORDER BY ${sort_by} ${order_by};`
 
     return db.query(queryStr).then((result) => {
             return result.rows;

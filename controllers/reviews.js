@@ -28,9 +28,9 @@ exports.patchUpdateVote = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-    const { sort_by } = req.query;
+    const { sort_by, order_by } = req.query;
 
-    fetchReviews(sort_by).then((reviews) => {
+    fetchReviews(sort_by, order_by).then((reviews) => {
         res.status(200).send({ reviews });
     })
     .catch((err) => {
