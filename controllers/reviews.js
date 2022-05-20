@@ -1,3 +1,4 @@
+const req = require('express/lib/request');
 const {
     fetchSingleReview, 
     updateVote,
@@ -27,7 +28,12 @@ exports.patchUpdateVote = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-    fetchReviews().then((reviews) => {
+    const { sort_by, order_by, category } = req.query;
+
+    fetchReviews(sort_by, order_by, category).then((reviews) => {
         res.status(200).send({ reviews });
+    })
+    .catch((err) => {
+        next(err)
     })
 };
