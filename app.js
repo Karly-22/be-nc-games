@@ -16,7 +16,8 @@ const {
 const { 
     handleCustomErrors,
     handlePSQLErrors, 
-    handleInternalServerError
+    handleInternalServerError,
+    handleInsertReviewCommentError
 } = require('./controllers/errors');
 
 const {
@@ -24,7 +25,8 @@ const {
 } = require('./controllers/users');
 
 const {
-    getReviewComments
+    getReviewComments,
+    postReviewComment
 } = require('./controllers/comments');
 
 app.get('/api/categories', getCategories);
@@ -32,6 +34,7 @@ app.get('/api/reviews', getReviews);
 app.get('/api/reviews/:review_id', getSingleReview);
 app.patch('/api/reviews/:review_id', patchUpdateVote);
 app.get('/api/reviews/:review_id/comments', getReviewComments);
+app.post('/api/reviews/:review_id/comments', postReviewComment);
 app.get('/api/users', getUsers);
 
 app.all('/*',(req, res) => {
