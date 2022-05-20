@@ -297,7 +297,7 @@ describe('POST /api/reviews/:review_id/comments', () => {
             });
     });
 
-    test('400: body does not contain both mandatory keys', () => {
+    test('400: should return custom error if body does not contain both mandatory keys', () => {
         const comment = {};
 
         return request(app)
@@ -309,7 +309,7 @@ describe('POST /api/reviews/:review_id/comments', () => {
             });
     });
 
-    test('400: body does not contain both mandatory keys', () => {
+    test('400: should return custom error if body does not contain both mandatory keys', () => {
         const comment = {username: 'mallionaire'};
 
         return request(app)
@@ -321,7 +321,7 @@ describe('POST /api/reviews/:review_id/comments', () => {
             });
     });
     
-    test('404: review id in path does not exist', () => {
+    test('404: should return custom error if review id in path does not exist', () => {
         const comment = {
             username: 'mallionaire',
             body: 'Fancy a game anyone?'
@@ -332,11 +332,11 @@ describe('POST /api/reviews/:review_id/comments', () => {
             .send(comment)
             .expect(404)
             .then(({ body: { msg }}) => {
-                expect(msg).toBe('Review not found')
+                expect(msg).toBe('No review found for review_id: 14')
             });
     });
 
-    test('400: review id is not a number', () => {
+    test('400: should return "Bad request" if review id is not a number', () => {
         const comment = {
             username: 'mallionaire',
             body: 'Fancy a game anyone?'
