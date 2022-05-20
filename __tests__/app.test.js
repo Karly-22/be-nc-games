@@ -438,4 +438,29 @@ describe('POST /api/reviews/:review_id/comments', () => {
             });
     });
     
+});
+
+describe.only('DELETE /api/comments/:comment_id', () => {
+    test('204: should delete given comment by comment_id', () => {
+        return request(app).delete('/api/comments/6').expect(204);     
+    });
+
+    test('404: should return "Route not found" if comment does not exisit', () => {
+        return request(app)
+            .delete('/api/comments/7')
+            .expect(404)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('Comment does not exist');  
+            
+            })
+    })
+
+    test('400: should return with "Bad request" id comment_id is not a number', () => {
+        return request(app)
+            .delete('/api/comments/yo')
+            .expect(400)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('Bad request');
+        })
+    })
 })
