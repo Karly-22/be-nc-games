@@ -239,6 +239,24 @@ describe('GET /api/reviews', () => {
                 expect(msg).toBe('Bad request');
             })
     });
+
+    test('200: should return a list of reviews sorted in asc or desc (default) order', () => {
+        return request(app)
+            .get('/api/reviews?order_by=ASC')
+            .expect(200)
+            .then(({ body: { reviews }}) => {
+                expect(reviews).toBeSortedBy('created_at');
+            })
+    });
+
+    test('400: should respond with "Bad request" if user tries to enter a non-valid sort_by query', () => {
+        return request(app)
+            .get('/api/reviews?order_by=CHAOS')
+            .expect(400)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('Bad request');
+            })
+    });
 });
 
 describe('GET /api/reviews/:review_id/comments', () => {
