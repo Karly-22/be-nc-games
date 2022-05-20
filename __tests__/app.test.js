@@ -445,7 +445,7 @@ describe.only('DELETE /api/comments/:comment_id', () => {
         return request(app).delete('/api/comments/6').expect(204);     
     });
 
-    test('404: should return "Route not found" if comment does not exisit', () => {
+    test('404: should return "Route not found" if comment does not exist', () => {
         return request(app)
             .delete('/api/comments/7')
             .expect(404)
