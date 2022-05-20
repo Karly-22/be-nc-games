@@ -274,3 +274,96 @@ describe('GET /api/reviews/:review_id/comments', () => {
         });
     });                    
 });
+
+describe('POST /api/reviews/:review_id/comments', () => {
+    test('200: should add a comment object to the comments array for the specified review id', () => {
+        const comment = {
+            username: 'mallionaire',
+            body: 'Fancy a game anyone?'
+        };
+
+        return request(app)
+            .post('/api/reviews/2/comments')
+            .send(comment)
+            .expect(201)
+            .then(({ body: { comment }}) => {
+                expect(comment).toMatchObject({
+                    body: 'Fancy a game anyone?',
+                    votes: 0,
+                    author: 'mallionaire',
+                    review_id: 2,
+                    created_at: expect.any(String),
+                })        
+            });
+    });
+
+    test('400: body does not contain both mandatory keys', () => {
+        const comment = {};
+
+        return request(app)
+            .post('/api/reviews/2/comments')
+            .send(comment)
+            .expect(400)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('No username or message input')
+            });
+    });
+
+    test('400: body does not contain both mandatory keys', () => {
+        const comment = {username: 'mallionaire'};
+
+        return request(app)
+            .post('/api/reviews/2/comments')
+            .send(comment)
+            .expect(400)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('No username or message input')
+            });
+    });
+    
+    test('404: review id in path does not exist', () => {
+        const comment = {
+            username: 'mallionaire',
+            body: 'Fancy a game anyone?'
+        };
+
+        return request(app)
+            .post('/api/reviews/14/comments')
+            .send(comment)
+            .expect(400)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('Bad request')
+            });
+    });
+
+    test('400: review id is not a number', () => {
+        const comment = {
+            username: 'mallionaire',
+            body: 'Fancy a game anyone?'
+        };
+
+        return request(app)
+            .post('/api/reviews/hiya/comments')
+            .send(comment)
+            .expect(400)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('Bad request')
+            });
+    });
+    
+    test('404: a user not in the data base tried to post', () => {
+        const comment = {
+            username: 'snoopDog',
+            body: 'Fancy a game anyone?'
+        };
+
+        return request(app)
+            .post('/api/reviews/2/comments')
+            .send(comment)
+            .expect(400)
+            .then(({ body: { msg }}) => {
+                expect(msg).toBe('Bad request')
+            });
+    });
+    
+})
