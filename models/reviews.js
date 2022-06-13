@@ -32,7 +32,7 @@ exports.fetchReviews = (sort_by = 'created_at', order_by = 'DESC', category) => 
     const allowedCategories = [
         'children\'s games', 
         'euro game', 
-        'dexterety', 
+        'dexterity', 
         'social deduction', 
         'strategy', 
         'hidden-roles', 
