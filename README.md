@@ -2,9 +2,11 @@
 
 ## Summary
 
-Link to hosted version:
+As part of the Northcoders Bootcamp, we were challenged to build and develop a RESTful API for a board game reviewing website. This solo project helped consolidate everything we have picked up from the backend part of the course whilst strengthening my TDD skills to ensure the data can only be accessed and returned as it should.
 
-As part of the Northcoders Bootcamp, we were challenged with building and developing the API for a games app to test our back-end skills. Both a test and development database of users, categories, reviews and comments were provided whilst I was tasked with building a series of endpoints that utilise various CRUD methods, including query-handling, to make the information accessible to users. TDD was also emploted to ensure the app runs as it should.
+## Link to hosted version
+
+https://karlys-games-app.herokuapp.com/api
 
 ## Cloning the repo
 
