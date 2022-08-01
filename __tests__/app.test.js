@@ -481,7 +481,7 @@ describe("GET /api", () => {
   });
 });
 
-describe.only("GET /api/users/:username", () => {
+describe("GET /api/users/:username", () => {
   test("200: should respond with an object containing :username information", () => {
     return request(app)
       .get("/api/users/philippaclaire9")
@@ -505,4 +505,74 @@ describe.only("GET /api/users/:username", () => {
         expect(msg).toBe("User does not exist!")
       });
     })
+});
+
+describe.only("PATCH /api/comments/:comment_id", () => {
+  test("200: should update the votes property within the selected comment", () => {
+    const comment_id = 1;
+    const userVoteComment = { inc_votes: 1 };
+
+    return request(app)
+      .patch(`/api/comments/${comment_id}`)
+      .send(userVoteComment)
+      .expect(200)
+      .then(({ body: { comment } }) => {
+        expect(comment).toEqual({
+          comment_id: 1,
+          body: 'I loved this game too!',
+          votes: 17,
+          author: 'bainesface',
+          review_id: 2,
+          created_at: "2017-11-22T12:43:33.389Z",
+          });
+        });
+  });
+
+  test('400: should respond with "Bad request" if not passed an integer through endpoint', () => {
+    const userVoteComment = { inc_votes: 1 };
+
+    return request(app)
+      .patch("/api/comments/test")
+      .send(userVoteComment)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad request");
+      });
+  });
+
+  test('400: should respond with "Bad request" if user passes a string for inc_votes', () => {
+    const userVoteComment = { inc_votes: "hello" };
+
+    return request(app)
+      .patch("/api/comments/1")
+      .send(userVoteComment)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad request");
+      });
+  });
+
+  test('400: should respond with "Bad request" if user passes an empty object for inc_votes', () => {
+    const userVoteComment = { inc_votes: {} };
+
+    return request(app)
+      .patch("/api/comments/1")
+      .send(userVoteComment)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad request");
+      });
+  });
+
+  test('404: should respond with "Comment does not exist" if passed a valid number but comment does not exist', () => {
+    const userVoteComment = { inc_votes: 10 };
+
+    return request(app)
+      .patch("/api/comments/100000")
+      .send(userVoteComment)
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Comment does not exist");
+      });
+  });
 });
