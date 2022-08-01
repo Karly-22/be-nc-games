@@ -482,7 +482,7 @@ describe("GET /api", () => {
 });
 
 describe.only("GET /api/users/:username", () => {
-    test("200: should respond with an object containing :username information", () => {
+  test("200: should respond with an object containing :username information", () => {
     return request(app)
       .get("/api/users/philippaclaire9")
       .expect(200)
@@ -495,5 +495,14 @@ describe.only("GET /api/users/:username", () => {
           })
         );
       });
-    });
+  });
+
+  test("404: should respond with msg if username does not exist", () => {
+    return request(app)
+      .get("/api/users/notahacker")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("User does not exist!")
+      });
+    })
 });
