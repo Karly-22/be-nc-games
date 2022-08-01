@@ -481,13 +481,13 @@ describe("GET /api", () => {
   });
 });
 
-describe('"GET /api/users/:username"', () => {
+describe.only("GET /api/users/:username", () => {
     test("200: should respond with an object containing :username information", () => {
     return request(app)
-      .get("/api/users/philippaclare9")
+      .get("/api/users/philippaclaire9")
       .expect(200)
-      .then(({ body: { username } }) => {
-        expect(username).toEqual(
+      .then(({ body: { user } }) => {
+        expect(user).toEqual(
           expect.objectContaining({
             username: 'philippaclaire9',
             name: 'philippa',
