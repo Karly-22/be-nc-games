@@ -480,3 +480,20 @@ describe("GET /api", () => {
       });
   });
 });
+
+describe('"GET /api/users/:username"', () => {
+    test("200: should respond with an object containing :username information", () => {
+    return request(app)
+      .get("/api/users/philippaclare9")
+      .expect(200)
+      .then(({ body: { username } }) => {
+        expect(username).toEqual(
+          expect.objectContaining({
+            username: 'philippaclaire9',
+            name: 'philippa',
+            avatar_url: 'https://avatars2.githubusercontent.com/u/24604688?s=460&v=4'
+          })
+        );
+      });
+    });
+});
