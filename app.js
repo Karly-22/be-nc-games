@@ -19,10 +19,9 @@ const {
   handleCustomErrors,
   handlePSQLErrors,
   handleInternalServerError,
-  handleInsertReviewCommentError,
 } = require("./controllers/errors");
 
-const { getUsers } = require("./controllers/users");
+const { getUsers, getUsername } = require("./controllers/users");
 
 const {
   getReviewComments,
@@ -39,6 +38,7 @@ app.get("/api/reviews/:review_id/comments", getReviewComments);
 app.post("/api/reviews/:review_id/comments", postReviewComment);
 app.delete("/api/comments/:comment_id", deleteComment);
 app.get("/api/users", getUsers);
+app.get("/api/users/:username", getUsername)
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Route not found" });
