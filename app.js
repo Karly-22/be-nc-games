@@ -27,6 +27,7 @@ const {
   getReviewComments,
   postReviewComment,
   deleteComment,
+  patchCommentVotes,
 } = require("./controllers/comments");
 
 app.get("/api", getApiJson);
@@ -37,8 +38,9 @@ app.patch("/api/reviews/:review_id", patchUpdateVote);
 app.get("/api/reviews/:review_id/comments", getReviewComments);
 app.post("/api/reviews/:review_id/comments", postReviewComment);
 app.delete("/api/comments/:comment_id", deleteComment);
+app.patch("/api/comments/:comment_id", patchCommentVotes);
 app.get("/api/users", getUsers);
-app.get("/api/users/:username", getUsername)
+app.get("/api/users/:username", getUsername);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Route not found" });
